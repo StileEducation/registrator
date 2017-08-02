@@ -1,0 +1,10 @@
+steps:
+  - command: docker build -t "docker.au.s522.net/bk/${BUILDKITE_BRANCH_NAME}/registrator:${BUILDKITE_BUILD_NUMBER}" .
+    label: 'Build docker image'
+  - wait
+  - command: docker push "docker.au.s522.net/bk/${BUILDKITE_BRANCH_NAME}/registrator:${BUILDKITE_BUILD_NUMBER}"
+    label: 'Push branch image'
+  - wait
+  - command: docker tag "docker.au.s522.net/bk/${BUILDKITE_BRANCH_NAME}/registrator:${BUILDKITE_BUILD_NUMBER}" docker.au.s522.net/bk/master/registrator:latest && docker push docker.au.s522.net/bk/master/registrator:latest
+    label: 'Push latest image'
+    branches: 'master'
